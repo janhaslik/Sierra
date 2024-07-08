@@ -1,0 +1,24 @@
+# Python-specific ignores
+*.pyc
+*.pyo
+__pycache__
+
+# macOS-specific ignores
+.DS_Store
+
+# Virtual environment ignores (if using virtualenv or venv)
+venv/
+env/
+*.env
+
+# Compiled files
+*.pyc
+*.class
+
+# IDE/Editor ignores
+.idea/
+.vscode/
+
+# Miscellaneous
+*.log
+*.sqlite3
