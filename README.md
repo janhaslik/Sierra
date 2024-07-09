@@ -12,8 +12,8 @@ Created and developed at Blue SeaBird by: @janhaslik
 #### 1. Appreciation Table
 Generate appreciation tables to understand the growth of your investments over time. Visualize the compounded growth and assess the performance of different assets.
 
-#### 2. KPI's
-Calculate import KPI's
+#### 2. Formulas
+Calculate import formulas
 
 #### 3. Dividend Analysis
 Analyze dividend histories and calculate dividend yields. Evaluate the impact of dividends on total returns.
