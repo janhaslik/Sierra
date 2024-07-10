@@ -1,7 +1,7 @@
 from qfin.portfolio_optimization import PortfolioOptimizer
 import qfin.time_series_analysis as tsa
 from fin.formulas import capm
-from fin.valuation import Comps
+from fin.valuation import CompsAnalysis, DCFAnalysis
 
 """
 Class for testing around the functionality of the sierra features.
@@ -26,7 +26,7 @@ companies = [
      'Revenue': 117.9, 'EBITDA': 39.4, 'Net Income': 29.27}
 ]
 
-comps = Comps(companies=companies)
+comps = CompsAnalysis(companies=companies)
 multiples = comps.calculate_multiples()
 statistics = comps.calculate_statistics()
 
@@ -35,3 +35,37 @@ print(multiples, '\n')
 print("Overview: Statistics")
 print(statistics)
 
+print("DCF Analysis \n")
+data = {
+    "1": {'EBIT': 1500, 'Taxrate': 0.21, 'D&A': 150, 'CapEx': 300, 'Change OWC': -10},
+    "2": {'EBIT': 1700, 'Taxrate': 0.21, 'D&A': 160, 'CapEx': 320, 'Change OWC': -15},
+    "3": {'EBIT': 1900, 'Taxrate': 0.21, 'D&A': 170, 'CapEx': 340, 'Change OWC': -20},
+    "4": {'EBIT': 2100, 'Taxrate': 0.21, 'D&A': 180, 'CapEx': 360, 'Change OWC': -25},
+    "5": {'EBIT': 2300, 'Taxrate': 0.21, 'D&A': 190, 'CapEx': 380, 'Change OWC': -30},
+    "6": {'EBIT': 2500, 'Taxrate': 0.21, 'D&A': 200, 'CapEx': 400, 'Change OWC': -35},
+    "7": {'EBIT': 2700, 'Taxrate': 0.21, 'D&A': 210, 'CapEx': 420, 'Change OWC': -40},
+    "8": {'EBIT': 2900, 'Taxrate': 0.21, 'D&A': 220, 'CapEx': 440, 'Change OWC': -45},
+    "9": {'EBIT': 3100, 'Taxrate': 0.21, 'D&A': 230, 'CapEx': 460, 'Change OWC': -50},
+    "10": {'EBIT': 3200, 'Taxrate': 0.21, 'D&A': 240, 'CapEx': 480, 'Change OWC': -55}
+}
+
+assumptions = {
+    "risk_free_rate": 0.03,  # Risk-free rate (3%)
+    "beta": 1.2,  # Beta coefficient for the company (1.2)
+    "expected_market_return": 0.08,  # Expected market return (8%)
+    "cost_of_debt": 0.045,  # Cost of debt (4.5%)
+    "equity": 1000000.0,  # Value of equity ($1,000,000)
+    "debt": 500000.0,  # Value of debt ($500,000)
+    "tax_rate": 0.21,  # Corporate tax rate (21%)
+    "growth_rate": 0.05  # Long-term growth rate for FCF (5%)
+}
+
+dcf_analysis = DCFAnalysis(period=6, assumptions=assumptions)
+dcf_analysis.calculate_free_cash_flow(data=data)
+tv = dcf_analysis.calculate_terminal_value()
+ev = dcf_analysis.calculate_enterprise_value()
+
+print(dcf_analysis.free_cash_flow_table)
+print(dcf_analysis.discount_table)
+print("\nTerminal Value:", f'${tv:.2f}')
+print("Enterprise Value:", f'${ev:.2f}')
