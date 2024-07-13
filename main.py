@@ -1,17 +1,17 @@
 from qfin.portfolio_optimization import PortfolioOptimizer
 import qfin.time_series_analysis as tsa
+from qfin.option_pricing import BlackScholesPricer
 from fin.formulas import capm
 from fin.valuation import CompsAnalysis, DCFAnalysis
 
-"""
+"""q
 Class for testing around the functionality of the sierra features.
 """
 
+print("Sierra Playground:\n")
+
 optimizer = PortfolioOptimizer()
 model = tsa.ARIMA()
-
-capm = capm(risk_free_rate=2.5, beta=0.0, expected_market_return=8.0)
-print(f'CAPM: {capm}%')
 
 companies = [
     {'Name': 'Apple Inc.', 'Market Cap': 2295.26, 'Enterprise Value': 2427.26,
@@ -68,4 +68,29 @@ ev = dcf_analysis.calculate_enterprise_value()
 print(dcf_analysis.free_cash_flow_table)
 print(dcf_analysis.discount_table)
 print("\nTerminal Value:", f'${tv:.2f}')
-print("Enterprise Value:", f'${ev:.2f}')
+print("Enterprise Value:", f'${ev:.2f}\n')
+
+print("Black Scholes Model\n")
+
+pricer = BlackScholesPricer(spot_price=421, strike_price=350, time_to_maturity=5,
+                            risk_free_interest_rate=0.03, volatility=0.15)
+call_price = pricer.call_option()
+put_price = pricer.put_option()
+
+print("Params:\n")
+pricer.print_params()
+print("\nCall Option, Price:", call_price)
+print("Put Option, Price:", put_price)
+
+"""
+print("\nBlack Scholes Model, Effect of Time on Price\n")
+
+time_range = 10
+for t in range(1, time_range):
+    pricer = BlackScholesPricer(spot_price=300, strike_price=250, time_to_maturity=t,
+                                risk_free_interest_rate=0.03, volatility=0.15)
+    call_price = pricer.call_option()
+    put_price = pricer.put_option()
+    print("Call Option, Price:", call_price)
+    print("Put Option, Price:", put_price)
+"""
