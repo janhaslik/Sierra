@@ -3,6 +3,7 @@ import qfin.time_series_analysis as tsa
 from qfin.option_pricing import BlackScholesPricer
 from fin.formulas import capm
 from fin.valuation import CompsAnalysis, DCFAnalysis
+from fin.amortization_table import calculate_amortization_table
 
 """q
 Class for testing around the functionality of the sierra features.
@@ -94,3 +95,12 @@ for t in range(1, time_range):
     print("Call Option, Price:", call_price)
     print("Put Option, Price:", put_price)
 """
+
+print("\nAmortization Table\n")
+total_interests, total_principal, total_payment, table, months_taken = calculate_amortization_table(1500, 0.03, 200000, 15)
+
+print(table)
+print(f'\nTotal Interests: ${total_interests}')
+print(f'Total Principal: ${total_principal}')
+print(f'Total Payment: ${total_payment}')
+print(f'Months Taken: {months_taken}m or {round(months_taken / 12, 2)}yrs')
