@@ -1,9 +1,11 @@
+from ml import LinearRegression
 from qfin.portfolio_optimization import PortfolioOptimizer
 import qfin.time_series_analysis as tsa
 from qfin.option_pricing import BlackScholesPricer
-from fin.formulas import capm
 from fin.valuation import CompsAnalysis, DCFAnalysis
 from fin.amortization_table import calculate_amortization_table
+import numpy as np
+from matplotlib import pyplot as plt
 
 """q
 Class for testing around the functionality of the sierra features.
@@ -104,3 +106,47 @@ print(f'\nTotal Interests: ${total_interests}')
 print(f'Total Principal: ${total_principal}')
 print(f'Total Payment: ${total_payment}')
 print(f'Months Taken: {months_taken}m or {round(months_taken / 12, 2)}yrs')
+
+print("\nLinear Regression\n")
+
+np.random.seed(0)
+
+X = np.random.randint(1, 11, size=(100, 1))
+
+y = 30000 + 5000 * X + np.random.randn(100, 1) * 2000
+y = y.flatten()
+
+split_index = int(len(X)*0.8)
+X_train, X_test, y_train, y_test = X[:split_index], X[split_index:], y[:split_index], y[split_index:]
+
+linear = LinearRegression(iterations=2000, learning_rate=0.05)
+linear.fit(X_train, y_train)
+mse_score, accuracy_score = linear.evaluate(X_test, y_test)
+
+print("MSE:", mse_score)
+print("Accuracy:", accuracy_score)
+
+print("Weights:", linear.weights)
+print("Bias:", linear.bias)
+
+# Plotting training history
+plt.figure(figsize=(12, 6))
+
+# Plot MSE history
+plt.subplot(1, 2, 1)
+plt.plot(linear.history)
+plt.xlabel('Iterations')
+plt.ylabel('MSE')
+plt.title('Training Loss (MSE) History')
+
+# Plot predictions vs actual data
+plt.subplot(1, 2, 2)
+plt.scatter(X, y, color='blue', label='Actual data')
+plt.plot(X, linear.predict(X), color='red', label='Fitted line')
+plt.xlabel('Job Level')
+plt.ylabel('Salary')
+plt.title('Linear Regression Fit')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
