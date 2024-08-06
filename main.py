@@ -129,17 +129,14 @@ print("Accuracy:", accuracy_score)
 print("Weights:", linear.weights)
 print("Bias:", linear.bias)
 
-# Plotting training history
 plt.figure(figsize=(12, 6))
 
-# Plot MSE history
 plt.subplot(1, 2, 1)
 plt.plot(linear.history)
 plt.xlabel('Iterations')
 plt.ylabel('MSE')
 plt.title('Training Loss (MSE) History')
 
-# Plot predictions vs actual data
 plt.subplot(1, 2, 2)
 plt.scatter(X, y, color='blue', label='Actual data')
 plt.plot(X, linear.predict(X), color='red', label='Fitted line')
