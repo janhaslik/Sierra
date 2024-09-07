@@ -47,31 +47,29 @@ class DCFAnalysis:
         Returns:
         - pd.DataFrame: Table storing free cash flows for each period and expected keys.
         """
-        expected_keys = ['EBIT', 'Taxrate', 'D&A', 'CapEx', 'Change OWC']
+        expected_keys = ['EBIT', 'Tax', 'D&A', 'CapEx', 'Change OWC', 'FCF']
 
         if self.period > len(data):
             raise ValueError('Period must be equal to or less than the number of data points')
 
-        free_cash_flow_table = pd.DataFrame(columns=range(1, self.period + 1), index=expected_keys + ['FCF'])
-
+        free_cash_flow_table = pd.DataFrame(columns=range(1, self.period + 1), index=expected_keys)
         for year in range(1, self.period + 1):
             str_year = str(year)
-            fcf = 0
 
-            for key in expected_keys:
-                value = 0
+            ebit = data[str_year]['EBIT']
+            taxrate = data[str_year]['Taxrate']
+            tax = ebit * taxrate
+            D_and_A = data[str_year]['D&A']
+            CapEx = data[str_year]['CapEx']
+            Change_in_OWC = data[str_year]['Change OWC']
 
-                if key == 'Taxrate':
-                    value = data[str_year][key] * data[str_year]['EBIT']
-                else:
-                    value = data[str_year][key]
+            fcf = ebit - tax + D_and_A - CapEx - Change_in_OWC
 
-                if key not in ['EBIT', 'D&A']:
-                    value *= -1
-
-                free_cash_flow_table.loc[key, int(year)] = value
-                fcf += value
-
+            free_cash_flow_table.loc['EBIT', int(year)] = ebit
+            free_cash_flow_table.loc['Tax', int(year)] = -tax
+            free_cash_flow_table.loc['D&A', int(year)] = D_and_A
+            free_cash_flow_table.loc['CapEx', int(year)] = -CapEx
+            free_cash_flow_table.loc['Change OWC', int(year)] = -Change_in_OWC
             free_cash_flow_table.loc['FCF', int(year)] = fcf
 
         self.free_cash_flow_table = free_cash_flow_table
@@ -87,7 +85,7 @@ class DCFAnalysis:
         if self.free_cash_flow_table is None:
             raise ValueError('Free cash flow table is not calculated. Call calculate_free_cash_flow first.')
 
-        self.discount_table = self.free_cash_flow_table.copy().drop(index=['EBIT', 'Taxrate', 'D&A', 'CapEx', 'Change OWC'])
+        self.discount_table = self.free_cash_flow_table.copy().drop(index=['EBIT', 'Tax', 'D&A', 'CapEx', 'Change OWC'])
 
         risk_free_rate = self.assumptions['risk_free_rate']
         beta = self.assumptions['beta']
@@ -104,9 +102,9 @@ class DCFAnalysis:
                              tax_rate=tax_rate)
 
         for year in range(1, self.period + 1):
-            discount_factor = 1 / (1 + discount_rate * 100) ** year
+            discount_factor = 1 / (1 + discount_rate) ** year
             self.discount_table.loc['Discount Factor', year] = discount_factor
-            self.discount_table.loc['Present Value', year] = self.discount_table.loc['FCF', year] * (1 - discount_factor)
+            self.discount_table.loc['Present Value', year] = self.discount_table.loc['FCF', year] * discount_factor
 
         self.pv_sum = self.discount_table.loc['Present Value'].sum()
         fcf_n = self.discount_table.loc['Present Value', self.period]

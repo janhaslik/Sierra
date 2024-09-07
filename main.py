@@ -40,16 +40,16 @@ print(statistics)
 
 print("DCF Analysis \n")
 data = {
-    "1": {'EBIT': 1500, 'Taxrate': 0.21, 'D&A': 150, 'CapEx': 300, 'Change OWC': -10},
-    "2": {'EBIT': 1700, 'Taxrate': 0.21, 'D&A': 160, 'CapEx': 320, 'Change OWC': -15},
-    "3": {'EBIT': 1900, 'Taxrate': 0.21, 'D&A': 170, 'CapEx': 340, 'Change OWC': -20},
-    "4": {'EBIT': 2100, 'Taxrate': 0.21, 'D&A': 180, 'CapEx': 360, 'Change OWC': -25},
-    "5": {'EBIT': 2300, 'Taxrate': 0.21, 'D&A': 190, 'CapEx': 380, 'Change OWC': -30},
-    "6": {'EBIT': 2500, 'Taxrate': 0.21, 'D&A': 200, 'CapEx': 400, 'Change OWC': -35},
-    "7": {'EBIT': 2700, 'Taxrate': 0.21, 'D&A': 210, 'CapEx': 420, 'Change OWC': -40},
-    "8": {'EBIT': 2900, 'Taxrate': 0.21, 'D&A': 220, 'CapEx': 440, 'Change OWC': -45},
-    "9": {'EBIT': 3100, 'Taxrate': 0.21, 'D&A': 230, 'CapEx': 460, 'Change OWC': -50},
-    "10": {'EBIT': 3200, 'Taxrate': 0.21, 'D&A': 240, 'CapEx': 480, 'Change OWC': -55}
+    "1": {'EBIT': 150000, 'Taxrate': 0.21, 'D&A': 1500, 'CapEx': 3000, 'Change OWC': -100},
+    "2": {'EBIT': 170000, 'Taxrate': 0.21, 'D&A': 1600, 'CapEx': 3200, 'Change OWC': -150},
+    "3": {'EBIT': 190000, 'Taxrate': 0.21, 'D&A': 1700, 'CapEx': 3400, 'Change OWC': -200},
+    "4": {'EBIT': 210000, 'Taxrate': 0.21, 'D&A': 1800, 'CapEx': 3600, 'Change OWC': -250},
+    "5": {'EBIT': 230000, 'Taxrate': 0.21, 'D&A': 1900, 'CapEx': 3800, 'Change OWC': -300},
+    "6": {'EBIT': 250000, 'Taxrate': 0.21, 'D&A': 2000, 'CapEx': 4000, 'Change OWC': -350},
+    "7": {'EBIT': 270000, 'Taxrate': 0.21, 'D&A': 2100, 'CapEx': 4200, 'Change OWC': -400},
+    "8": {'EBIT': 290000, 'Taxrate': 0.21, 'D&A': 2200, 'CapEx': 4400, 'Change OWC': -450},
+    "9": {'EBIT': 310000, 'Taxrate': 0.21, 'D&A': 2300, 'CapEx': 4600, 'Change OWC': -500},
+    "10": {'EBIT': 320000, 'Taxrate': 0.21, 'D&A': 2400, 'CapEx': 4800, 'Change OWC': -550}
 }
 
 assumptions = {
@@ -69,6 +69,7 @@ tv = dcf_analysis.calculate_terminal_value()
 ev = dcf_analysis.calculate_enterprise_value()
 
 print(dcf_analysis.free_cash_flow_table)
+print()
 print(dcf_analysis.discount_table)
 print("\nTerminal Value:", f'${tv:.2f}')
 print("Enterprise Value:", f'${ev:.2f}\n')
