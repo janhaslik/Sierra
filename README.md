@@ -16,12 +16,14 @@ DCF Analysis, Comparable Company Analysis
 Calculate import formulas
 
 #### 3. Loan Amortization
-Create loan amortization tabel to understand the breakdown of principal and interest payments over time.
+Create loan amortization table to understand the breakdown of principal and interest payments over time.
 
 ### Sierra Quantitative Finance (`sierra.qfin`)
 
-#### 1. Option Pricing
-Calculate option prices using models like Black-Scholes and Binomial Tree. Analyze option strategies and greeks.
+#### 1. Option Pricing with BSM
+Calculate option prices using the Black-Scholes-Merton model.
+
+#### 2. Monte Carlo Simulation
 
 ### Sierra Machine Learning (`sierra.ml`)
 

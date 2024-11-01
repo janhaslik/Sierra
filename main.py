@@ -1,20 +1,17 @@
 from ml import LinearRegression
-from qfin.portfolio_optimization import PortfolioOptimizer
-import qfin.time_series_analysis as tsa
 from qfin.option_pricing import BlackScholesPricer
 from fin.valuation import CompsAnalysis, DCFAnalysis
 from fin.amortization_table import calculate_amortization_table
 import numpy as np
 from matplotlib import pyplot as plt
 
+from qfin.simulations import monte_carlo_simulation
+
 """q
 Class for testing around the functionality of the sierra features.
 """
 
 print("Sierra Playground:\n")
-
-optimizer = PortfolioOptimizer()
-model = tsa.ARIMA()
 
 companies = [
     {'Name': 'Apple Inc.', 'Market Cap': 2295.26, 'Enterprise Value': 2427.26,
@@ -148,3 +145,41 @@ plt.legend()
 
 plt.tight_layout()
 plt.show()
+
+print("\nMonte Carlo Simulation\n")
+
+num_simulations = 10000  # Number of simulated paths
+num_steps = 100  # Number of steps
+
+initial_price = 100  # Initial stock price in dollars
+drift = 0.001  # Expected return per step
+volatility = 0.02  # Volatility per step
+
+def step_func(price: float, step: int):
+    adjusted_drift = drift * (1 - 0.0001 * step) # Adjust drift over time
+    random_shock = np.random.normal(
+        loc=adjusted_drift, # Mean
+        scale=volatility # Standard Deviation
+    )
+
+    return price * np.exp(random_shock)
+
+
+simulation_results = monte_carlo_simulation(
+    num_simulations=num_simulations,
+    initial_state=initial_price,
+    num_steps=num_steps,
+    step_function=step_func
+)
+
+plt.figure(figsize=(12, 6))
+plt.title('Monte Carlo Simulation of Stock Price Evolution')
+plt.xlabel('Step')
+plt.ylabel('Price')
+
+for result in simulation_results[:10]:
+    plt.plot(result)
+
+plt.show()
+
+print("Final Price of last path:", simulation_results[-1, -1])
