@@ -3,8 +3,6 @@
 
 Sierra is a Python library designed for finance and quantitative finance enthusiasts. It aims to offer powerful features in the finance domain.
 
-Created and developed at Blue SeaBird by: @janhaslik
-
 ## Features
 
 ### Sierra Finance (`sierra.fin`)
